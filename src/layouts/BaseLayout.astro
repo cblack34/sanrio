@@ -1,0 +1,49 @@
+---
+interface Props {
+  title: string;
+  active?: string;
+}
+
+const { title, active } = Astro.props;
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — Sanrio Ops</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">SANRIO OPS</div>
+      <nav>
+        <a href="/" class={active === 'home' ? 'active' : ''}>Home</a>
+        <a href="/weekly" class={active === 'weekly' ? 'active' : ''}>Weekly</a>
+        <a href="/templates" class={active === 'templates' ? 'active' : ''}>Templates</a>
+        <a href="/guides" class={active === 'guides' ? 'active' : ''}>Guides</a>
+      </nav>
+      <div class="server-time" id="server-time">Server time (UTC-2)</div>
+    </header>
+    <slot />
+    <script>
+      function getServerTime() {
+        const now = new Date();
+        const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+        return new Date(utcMs - (2 * 60 * 60 * 1000));
+      }
+      function updateTime() {
+        const st = getServerTime();
+        const el = document.getElementById('server-time');
+        if (el) {
+          const h = String(st.getHours()).padStart(2, '0');
+          const m = String(st.getMinutes()).padStart(2, '0');
+          el.textContent = `Server ${h}:${m} UTC-2`;
+        }
+      }
+      updateTime();
+      setInterval(updateTime, 30000);
+    </script>
+  </body>
+</html>
