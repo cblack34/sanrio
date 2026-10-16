@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const days = [
+  { id: 'monday', name: 'Monday', theme: 'Radar Training', vp: '1', focus: 'Radar, stamina, drone parts' },
+  { id: 'tuesday', name: 'Tuesday', theme: 'City Building', vp: '1', focus: 'Construction speedups, buildings' },
+  { id: 'wednesday', name: 'Wednesday', theme: 'Tech Research', vp: '1', focus: 'Research, Valor Badges' },
+  { id: 'thursday', name: 'Thursday', theme: 'Hero Training', vp: '2', focus: 'Hero EXP, shards, medals' },
+  { id: 'friday', name: 'Friday', theme: 'Total Mobilization', vp: '3', focus: 'All speedups, troop training' },
+  { id: 'saturday', name: 'Saturday', theme: 'Enemy Buster', vp: '4', focus: 'PvP, healing, remaining items' },
+  { id: 'sunday', name: 'Sunday', theme: 'Prep', vp: '—', focus: 'Save for next week' },
+];
+---
+
+<BaseLayout title="Home" active="home">
+  <div class="main" style="max-width: 100%; padding: 32px 40px;">
+    <div class="today-banner" id="today-banner">
+      <div class="label">TODAY</div>
+      <h2 id="today-theme">Loading…</h2>
+      <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 14px;" id="today-meta"></p>
+    </div>
+
+    <h2>Weekly Schedule</h2>
+    <table class="schedule-table" id="schedule">
+      <thead>
+        <tr>
+          <th>DAY</th>
+          <th>THEME</th>
+          <th>VP</th>
+          <th>FOCUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {days.map((day) => (
+          <tr data-day={day.id}>
+            <td><a href={`/weekly/${day.id}`}>{day.name}</a></td>
+            <td>{day.theme}</td>
+            <td>{day.vp}</td>
+            <td>{day.focus}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2>Quick Links</h2>
+    <div class="quick-links">
+      <a class="quick-link" href="/weekly/friday">
+        <strong>Friday Templates</strong>
+        <span>Ready-to-copy announcements</span>
+      </a>
+      <a class="quick-link" href="/guides">
+        <strong>High-VP Days Guide</strong>
+        <span>What to do Fri / Sat</span>
+      </a>
+      <a class="quick-link" href="/guides">
+        <strong>Arms Race Notes</strong>
+        <span>Double-dip windows</span>
+      </a>
+    </div>
+
+    <p class="footer-note">Server time is fixed UTC-2. Themes and VP values are placeholders — verify current patch.</p>
+  </div>
+
+  <script define:vars={{ days }}>
+    function getServerTime() {
+      const now = new Date();
+      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+      return new Date(utcMs - (2 * 60 * 60 * 1000));
+    }
+
+    const dayMap = {
+      0: 'sunday',
+      1: 'monday',
+      2: 'tuesday',
+      3: 'wednesday',
+      4: 'thursday',
+      5: 'friday',
+      6: 'saturday',
+    };
+
+    function updateToday() {
+      const st = getServerTime();
+      const dayId = dayMap[st.getDay()];
+      const day = days.find(d => d.id === dayId);
+      if (!day) return;
+
+      const banner = document.getElementById('today-banner');
+      const themeEl = document.getElementById('today-theme');
+      const metaEl = document.getElementById('today-meta');
+      if (themeEl) themeEl.textContent = day.theme;
+      if (metaEl) metaEl.textContent = `${day.vp} VP · ${day.focus}`;
+
+      document.querySelectorAll('#schedule tr').forEach(tr => {
+        tr.classList.toggle('today', tr.dataset.day === dayId);
+      });
+    }
+
+    updateToday();
+  </script>
+</BaseLayout>
