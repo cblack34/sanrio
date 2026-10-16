@@ -1,0 +1,6 @@
+services:
+  web:
+    build: .
+    image: sanrio-ops
+    ports:
+      - "8080:80"
