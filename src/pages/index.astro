@@ -3,21 +3,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const days = [
   { id: 'monday', name: 'Monday', theme: 'Radar Training', vp: '1', focus: 'Radar, stamina, drone parts' },
-  { id: 'tuesday', name: 'Tuesday', theme: 'City Building', vp: '1', focus: 'Construction speedups, buildings' },
-  { id: 'wednesday', name: 'Wednesday', theme: 'Tech Research', vp: '1', focus: 'Research, Valor Badges' },
+  { id: 'tuesday', name: 'Tuesday', theme: 'City Building', vp: '2', focus: 'Construction speedups, buildings' },
+  { id: 'wednesday', name: 'Wednesday', theme: 'Tech Research', vp: '2', focus: 'Research, Valor Badges' },
   { id: 'thursday', name: 'Thursday', theme: 'Hero Training', vp: '2', focus: 'Hero EXP, shards, medals' },
-  { id: 'friday', name: 'Friday', theme: 'Total Mobilization', vp: '3', focus: 'All speedups, troop training' },
+  { id: 'friday', name: 'Friday', theme: 'Total Mobilization', vp: '2', focus: 'All speedups, troop training' },
   { id: 'saturday', name: 'Saturday', theme: 'Enemy Buster', vp: '4', focus: 'PvP, healing, remaining items' },
   { id: 'sunday', name: 'Sunday', theme: 'Prep', vp: '—', focus: 'Save for next week' },
 ];
 ---
 
 <BaseLayout title="Home" active="home">
-  <div class="main" style="max-width: 100%; padding: 32px 40px;">
+  <main class="main" style="max-width: 100%;">
     <div class="today-banner" id="today-banner">
       <div class="label">TODAY</div>
       <h2 id="today-theme">Loading…</h2>
       <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 14px;" id="today-meta"></p>
+      <p style="margin: 8px 0 0; font-size: 13px; color: var(--text-dim);" id="today-reset"></p>
     </div>
 
     <h2>Weekly Schedule</h2>
@@ -44,10 +45,6 @@ const days = [
 
     <h2>Quick Links</h2>
     <div class="quick-links">
-      <a class="quick-link" href="/weekly/friday">
-        <strong>Friday Templates</strong>
-        <span>Ready-to-copy announcements</span>
-      </a>
       <a class="quick-link" href="/guides">
         <strong>High-VP Days Guide</strong>
         <span>What to do Fri / Sat</span>
@@ -59,7 +56,7 @@ const days = [
     </div>
 
     <p class="footer-note">Server time is fixed UTC-2. Themes and VP values are placeholders — verify current patch.</p>
-  </div>
+  </main>
 
   <script define:vars={{ days }}>
     function getServerTime() {
@@ -90,11 +87,16 @@ const days = [
       if (themeEl) themeEl.textContent = day.theme;
       if (metaEl) metaEl.textContent = `${day.vp} VP · ${day.focus}`;
 
+      const minsLeft = 1440 - (st.getHours() * 60 + st.getMinutes());
+      const resetEl = document.getElementById('today-reset');
+      if (resetEl) resetEl.textContent = `Daily reset in ${Math.floor(minsLeft / 60)}h ${minsLeft % 60}m`;
+
       document.querySelectorAll('#schedule tr').forEach(tr => {
         tr.classList.toggle('today', tr.dataset.day === dayId);
       });
     }
 
     updateToday();
+    setInterval(updateToday, 30000);
   </script>
 </BaseLayout>

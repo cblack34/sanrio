@@ -17,12 +17,12 @@ import '../styles/global.css';
   </head>
   <body>
     <header class="topbar">
-      <div class="brand">SANRIO OPS</div>
+      <div class="brand"><a href="/">SANRIO OPS</a></div>
       <nav>
         <a href="/" class={active === 'home' ? 'active' : ''}>Home</a>
         <a href="/weekly" class={active === 'weekly' ? 'active' : ''}>Weekly</a>
-        <a href="/templates" class={active === 'templates' ? 'active' : ''}>Templates</a>
         <a href="/guides" class={active === 'guides' ? 'active' : ''}>Guides</a>
+        <a href="/r4" class={`leaders ${active === 'r4' ? 'active' : ''}`}>R4/R5</a>
       </nav>
       <div class="server-time" id="server-time">Server time (UTC-2)</div>
     </header>

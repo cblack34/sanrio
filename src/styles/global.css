@@ -5,8 +5,8 @@
   --surface-3: #161a1f;
   --text: #e8e6e3;
   --text-muted: #a8a6a1;
-  --text-dim: #6b6a66;
-  --accent: #6b7c4a;
+  --text-dim: #8e8d88;
+  --accent: #84965a;
   --border: #2a3038;
 }
 
@@ -31,8 +31,14 @@ a:hover {
   text-decoration: underline;
 }
 
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .topbar {
-  height: 56px;
+  min-height: 56px;
+  flex-wrap: wrap;
   background: var(--surface);
   display: flex;
   align-items: center;
@@ -47,9 +53,21 @@ a:hover {
   color: var(--text);
 }
 
+.topbar .brand a {
+  color: inherit;
+}
+
 .topbar nav a {
+  display: inline-block;
   color: var(--text-muted);
-  margin-right: 16px;
+  padding: 8px 12px;
+}
+
+.topbar .brand a:hover,
+.topbar nav a.leaders {
+  border-left: 1px solid var(--border);
+  margin-left: 8px;
+  padding-left: 20px;
 }
 
 .topbar nav a.active,
@@ -157,6 +175,10 @@ a:hover {
   font-weight: 600;
 }
 
+.schedule-table tr.today td:first-child {
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+
 .quick-links {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -190,14 +212,34 @@ a:hover {
 .footer-note {
   margin-top: 48px;
   font-size: 12px;
-  color: #5a5a56;
+  color: var(--text-dim);
 }
 
 @media (max-width: 800px) {
+  .topbar {
+    padding: 8px 16px;
+    gap: 0 16px;
+  }
+  .container {
+    flex-direction: column;
+  }
   .sidebar {
+    width: auto;
+    padding: 0;
+    display: flex;
+    overflow-x: auto;
+  }
+  .sidebar .label {
     display: none;
+  }
+  .sidebar a {
+    white-space: nowrap;
   }
   .main {
     padding: 24px 16px;
+  }
+  .schedule-table th,
+  .schedule-table td {
+    padding: 10px 8px;
   }
 }
