@@ -7,9 +7,9 @@ import { days } from '../../data/schedule.js';
   <div class="container">
     <aside class="sidebar">
       <div class="label">WEEKLY</div>
-      {days.map(day => (
-        <a href={`/weekly/${day.id}/`} class={day.id === 'friday' ? 'active' : ''}>{day.name}</a>
-      ))}
+      {days.map(day => day.page
+        ? <a href={`/weekly/${day.id}/`} class={day.id === 'friday' ? 'active' : ''}>{day.name}</a>
+        : <span>{day.name}</span>)}
     </aside>
     <main class="main">
       <div style="font-size: 13px; color: var(--text-dim); margin-bottom: 8px;">Weekly / Friday</div>
@@ -33,11 +33,6 @@ import { days } from '../../data/schedule.js';
       <a class="quick-link" href="/r4/" style="display: inline-block; margin-top: 8px;">
         <strong>Friday announcement templates</strong>
       </a>
-
-      <div style="margin-top: 48px; display: flex; justify-content: space-between;">
-        <a href="/weekly/thursday/">← Thursday</a>
-        <a href="/weekly/saturday/">Saturday →</a>
-      </div>
 
       <p class="footer-note">Placeholder content. Verify current mechanics and VP values with the alliance.</p>
     </main>

@@ -17,7 +17,7 @@ export const days = [
     arms: ['drone', 'hero', 'tech', 'base', 'unit', 'tech'], overlap: ['tech'] },
   { id: 'thursday', name: 'Thursday', theme: 'Train Heroes', vp: '2', focus: 'Hero EXP, shards, medals',
     arms: ['base', 'unit', 'hero', 'tech', 'drone', 'hero'], overlap: ['hero'] },
-  { id: 'friday', name: 'Friday', theme: 'Total Mobilization', vp: '2', focus: 'All speedups, troop training',
+  { id: 'friday', page: true, name: 'Friday', theme: 'Total Mobilization', vp: '2', focus: 'All speedups, troop training',
     arms: ['tech', 'drone', 'unit', 'hero', 'base', 'unit'], overlap: ['base', 'tech', 'unit'] },
   { id: 'saturday', name: 'Saturday', theme: 'Enemy Buster', vp: '4', focus: 'PvP, healing, remaining items',
     arms: ['unit', 'tech', 'base', 'drone', 'hero', 'base'], overlap: ['base', 'tech', 'unit'] },

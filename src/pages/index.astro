@@ -26,7 +26,7 @@ import { days, phases } from '../data/schedule.js';
       <tbody>
         {days.map((day) => (
           <tr data-day={day.id}>
-            <td><a href={`/weekly/${day.id}/`}>{day.name}</a></td>
+            <td>{day.page ? <a href={`/weekly/${day.id}/`}>{day.name}</a> : day.name}</td>
             <td>{day.theme}</td>
             <td>{day.vp}</td>
             <td>{day.focus}</td>
@@ -51,12 +51,6 @@ import { days, phases } from '../data/schedule.js';
   </main>
 
   <script define:vars={{ days, phases }}>
-    function getServerTime() {
-      const now = new Date();
-      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-      return new Date(utcMs - (2 * 60 * 60 * 1000));
-    }
-
     const dayMap = {
       0: 'sunday',
       1: 'monday',
@@ -68,8 +62,8 @@ import { days, phases } from '../data/schedule.js';
     };
 
     function updateToday() {
-      const st = getServerTime();
-      const dayId = dayMap[st.getDay()];
+      const st = new Date(Date.now() - 2 * 3600e3);
+      const dayId = dayMap[st.getUTCDay()];
       const day = days.find(d => d.id === dayId);
       if (!day) return;
 
@@ -79,9 +73,9 @@ import { days, phases } from '../data/schedule.js';
       if (themeEl) themeEl.textContent = day.theme;
       if (metaEl) metaEl.textContent = `${day.vp} VP · ${day.focus}`;
 
-      const minsLeft = 1440 - (st.getHours() * 60 + st.getMinutes());
+      const minsLeft = 1440 - (st.getUTCHours() * 60 + st.getUTCMinutes());
       const resetEl = document.getElementById('today-reset');
-      const phase = day.arms[Math.floor(st.getHours() / 4)];
+      const phase = day.arms[Math.floor(st.getUTCHours() / 4)];
       const armsEl = document.getElementById('today-arms');
       if (armsEl) armsEl.textContent = `Arms Race now: ${phases[phase]}${day.overlap.includes(phase) ? ' ★ also scores in VS' : ''} →`;
 

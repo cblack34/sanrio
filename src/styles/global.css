@@ -149,12 +149,17 @@ a:focus-visible {
   letter-spacing: 0.05em;
 }
 
-.sidebar a {
+.sidebar a,
+.sidebar span {
   display: block;
   padding: 10px 20px;
   color: var(--text-muted);
   font-size: 14px;
   font-weight: 700;
+}
+
+.sidebar span {
+  color: var(--text-dim);
 }
 
 .sidebar a.active {
@@ -349,7 +354,8 @@ a:focus-visible {
   .sidebar .label {
     display: none;
   }
-  .sidebar a {
+  .sidebar a,
+  .sidebar span {
     white-space: nowrap;
   }
   .main {
