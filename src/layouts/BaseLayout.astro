@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { title, active } = Astro.props;
+import '@fontsource/bangers';
 import '../styles/global.css';
 ---
 
@@ -20,9 +21,10 @@ import '../styles/global.css';
       <div class="brand"><a href="/">SANRIO OPS</a></div>
       <nav>
         <a href="/" class={active === 'home' ? 'active' : ''}>Home</a>
-        <a href="/weekly" class={active === 'weekly' ? 'active' : ''}>Weekly</a>
-        <a href="/guides" class={active === 'guides' ? 'active' : ''}>Guides</a>
-        <a href="/r4" class={`leaders ${active === 'r4' ? 'active' : ''}`}>R4/R5</a>
+        <a href="/weekly/" class={active === 'weekly' ? 'active' : ''}>Weekly</a>
+        <a href="/arms-race/" class={active === 'arms' ? 'active' : ''}>Arms Race</a>
+        <a href="/guides/" class={active === 'guides' ? 'active' : ''}>Guides</a>
+        <a href="/r4/" class={`leaders ${active === 'r4' ? 'active' : ''}`}>R4/R5</a>
       </nav>
       <div class="server-time" id="server-time">Server time (UTC-2)</div>
     </header>
