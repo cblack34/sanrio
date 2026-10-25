@@ -13,8 +13,8 @@ npm run dev
 
 ## Design notes
 
-- Dark tactical / wasteland palette
-- Muted olive accent only for current-day state
+- Matches the in-game UI: slate header bars, tab-style nav, light list panels, orange event banners, Bangers display font
+- Orange marks current state only (today's row, the live Arms Race phase), as in game
 - Small focused pages with secondary nav for days
 - Avoid common AI design patterns (no purple gradients, glass, uniform heavy rounding, etc.)
 

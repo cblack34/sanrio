@@ -1,29 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-
-const days = [
-  { id: 'monday', name: 'Monday' },
-  { id: 'tuesday', name: 'Tuesday' },
-  { id: 'wednesday', name: 'Wednesday' },
-  { id: 'thursday', name: 'Thursday' },
-  { id: 'friday', name: 'Friday' },
-  { id: 'saturday', name: 'Saturday' },
-  { id: 'sunday', name: 'Sunday' },
-];
+import { days } from '../../data/schedule.js';
 ---
 
 <BaseLayout title="Friday — Total Mobilization" active="weekly">
   <div class="container">
     <aside class="sidebar">
       <div class="label">WEEKLY</div>
-      {days.map(day => (
-        <a href={`/weekly/${day.id}`} class={day.id === 'friday' ? 'active' : ''}>{day.name}</a>
-      ))}
+      {days.map(day => day.page
+        ? <a href={`/weekly/${day.id}/`} class={day.id === 'friday' ? 'active' : ''}>{day.name}</a>
+        : <span>{day.name}</span>)}
     </aside>
     <main class="main">
       <div style="font-size: 13px; color: var(--text-dim); margin-bottom: 8px;">Weekly / Friday</div>
-      <h1 style="margin: 0 0 8px; font-size: 28px;">Friday — Total Mobilization</h1>
-      <p style="margin: 0; color: var(--text-muted);">3 Victory Points. Highest priority day for remaining speedups and troop training.</p>
+      <h1 style="margin: 0 0 8px;">Friday — Total Mobilization</h1>
+      <p style="margin: 0; color: var(--text-muted);">2 Victory Points. Highest priority day for remaining speedups and troop training.</p>
 
       <div class="summary">
         <strong>Use remaining construction, research, and training speedups.</strong>
@@ -39,14 +30,9 @@ const days = [
       </ul>
 
       <h2>Related</h2>
-      <a class="quick-link" href="/templates" style="display: inline-block; margin-top: 8px;">
+      <a class="quick-link" href="/r4/" style="display: inline-block; margin-top: 8px;">
         <strong>Friday announcement templates</strong>
       </a>
-
-      <div style="margin-top: 48px; display: flex; justify-content: space-between;">
-        <a href="/weekly/thursday">← Thursday</a>
-        <a href="/weekly/saturday">Saturday →</a>
-      </div>
 
       <p class="footer-note">Placeholder content. Verify current mechanics and VP values with the alliance.</p>
     </main>

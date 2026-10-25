@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { days, phases } from '../data/schedule.js';
+
+const slots = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'];
+---
+
+<BaseLayout title="Arms Race" active="arms">
+  <main class="main">
+    <h1>Arms Race</h1>
+
+    <div class="today-banner">
+      <div class="label">NOW</div>
+      <h2 id="ar-now">Loading…</h2>
+      <p style="margin: 4px 0 0; font-size: 14px;" id="ar-meta"></p>
+      <p style="margin: 8px 0 0; font-size: 13px;" id="ar-next"></p>
+    </div>
+
+    <p>Six 4-hour phases a day, same every week. <strong>★</strong> means the phase also scores in that day's VS — do those actions then.</p>
+
+    <div class="table-scroll">
+      <table class="schedule-table arms-table">
+        <thead>
+          <tr>
+            <th>TIME</th>
+            {days.map((day) => <th data-day={day.id}>{day.name.slice(0, 3).toUpperCase()}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {slots.map((time, i) => (
+            <tr>
+              <td>{time}</td>
+              {days.map((day) => (
+                <td data-day={day.id} data-slot={i} title={phases[day.arms[i]]}>
+                  {phases[day.arms[i]].split(' ')[0]}{day.overlap.includes(day.arms[i]) && ' ★'}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Tips</h2>
+    <ul>
+      <li>You get one swap per day. If you sleep through 04:00, do the 00:00 phase, then swap 04:00 into the next slot.</li>
+      <li>Chest rewards are the same every phase; the points needed change by phase.</li>
+      <li>Friday and Saturday VS score speedups broadly, so Base, Tech, and Unit phases all count.</li>
+    </ul>
+
+    <p class="footer-note">Base schedule before swaps — your in-game calendar shows your own swaps. Verified in game Oct 2026.</p>
+  </main>
+
+  <script define:vars={{ days, phases, slots }}>
+    function update() {
+      const st = new Date(Date.now() - 2 * 3600e3);
+      const day = days[(st.getUTCDay() + 6) % 7];
+      const slot = Math.floor(st.getUTCHours() / 4);
+      const phase = day.arms[slot];
+      const minsLeft = (slot + 1) * 240 - (st.getUTCHours() * 60 + st.getUTCMinutes());
+      const next = slot < 5 ? phases[day.arms[slot + 1]] : phases[days[(st.getUTCDay() + 7) % 7].arms[0]];
+
+      document.getElementById('ar-now').textContent = phases[phase] + (day.overlap.includes(phase) ? ' ★' : '');
+      document.getElementById('ar-meta').textContent =
+        `${day.name} · ends in ${Math.floor(minsLeft / 60)}h ${minsLeft % 60}m · ` +
+        (day.overlap.includes(phase) ? `also scores in ${day.theme}` : 'Arms Race only');
+      document.getElementById('ar-next').textContent = `Next: ${next}`;
+
+      document.querySelectorAll('.arms-table [data-day]').forEach((el) => {
+        el.classList.toggle('today', el.dataset.day === day.id);
+        el.classList.toggle('now', el.dataset.day === day.id && el.dataset.slot === String(slot));
+      });
+    }
+    update();
+    setInterval(update, 30000);
+  </script>
+</BaseLayout>
